@@ -1,0 +1,1 @@
+Uses the [Micro.blog JSON API](http://help.micro.blog/2017/api-json/) to retrieve the user's 5 most recent mentions and display them in Siri. Requires a Micro.blog app token. 
