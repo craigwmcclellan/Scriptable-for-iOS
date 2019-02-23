@@ -42,7 +42,6 @@ function createGroup(groupName) {
 	var newGroup = new ContactsGroup();
 	newGroup.name = groupName;
  	ContactsGroup.add(newGroup, container)
- 	ContactsGroup.update(newGroup)
  	Contact.persistChanges();
 }
 
