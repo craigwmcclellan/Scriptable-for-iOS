@@ -1,3 +1,6 @@
+// Variables used by Scriptable.
+// These must be at the very top of the file. Do not edit.
+// icon-color: orange; icon-glyph: users;
 // When run, this Script will search the notes field for all contacts in the default contacts container (usually iCloud) for a character the user designates in the script (I recommend an emoji). Any contacts that have the emoji will be added to the contact group the user specifies. If that group does not exist yet, it will be created.
 
 // Present an alert to the user asking for the search term (emoji) and the name of the Contact Group to add contacts to.
@@ -41,7 +44,7 @@ function checkGroupExists() {
 function createGroup(groupName) {
 	var newGroup = new ContactsGroup();
 	newGroup.name = groupName;
- 	ContactsGroup.add(newGroup, container)
+ 	ContactsGroup.add(newGroup)
  	Contact.persistChanges();
 }
 
@@ -52,19 +55,22 @@ if (groupExists == false) {
   console.log("Group " + userGroup + " created"); 
 }
 else if (groupExists == true) {
-  console.log("Group exists");
+  console.log("Group " + userGroup + " exists");
 }
 
 // Add Contacts with Emoji Search Term to Contact Group
 
 function addToGroup(groupName) {
    for (i = 0; i < allGroups.length; i++) {
-      if (allGroups[i].name == userGroup) {
-         var group = allGroups[i];
+      if (allGroups[i].name == groupName) {
+        var group = allGroups[i];
       }
    }
   for (i = 0; i < allContacts.length; i++) {
     if (allContacts[i].note == searchTerm) {
+      var last = allContacts[i].familyName;
+      var first = allContacts[i].givenName;
+      console.log("Contact " + first + " " + last + " added to group " + group.name + ".");
       group.addMember(allContacts[i])
       ContactsGroup.update(group);
       allContacts[i].note = "";
@@ -75,5 +81,3 @@ function addToGroup(groupName) {
 
 var success = addToGroup(userGroup);
 Contact.persistChanges();
-
-
