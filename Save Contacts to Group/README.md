@@ -1,5 +1,8 @@
 # Save Contacts to Group
 
-This (unfinished) script is allows users to create new contact groups on iOS from contacts. If you enter a particular note string (I recommend Emoji) into the note field of a contact, this script will ask for the string and the name of a contact group. If the group exists, it will just add all contacts with that note field to the contact group. If the group doesn't exist, it will create the group, then add the contacts.
+This script allows users to create new contact groups on iOS from contacts. 
 
-I'm posting here now to share and identify bugs.
+To use this script, enter a string (I recommend an emoji) into the note field of all contacts you wish to add to a Contact Group. When you run the script, it will ask for the string and the name of a contact group. 
+
+If the group exists, it will add all contacts with that note field to the contact group and clear the note field. If the group doesn't exist, it will create the group, then add the contacts.
+
