@@ -1,4 +1,6 @@
-async function authorizeCredential(credentialName) {
+let baseURL = "http://micro.blog/micropub"
+  
+  async function authorizeCredential(credentialName) {
    if (Keychain.contains(credentialName)) {
       var credential = Keychain.get(credentialName);
     }
@@ -16,18 +18,46 @@ async function authorizeCredential(credentialName) {
           var credential = Keychain.get(credentialName);
         }
         else {
-          console.log("User Cancelled Action"); 
+          console.log("User Cancelled Action");
+          Script.complete();
         }
     }
     return credential
 }
 
+async function updateCategory(url, category) {
+    var updateReq = new Request(baseURL)
+    updateReq.method = "POST";
+    updateReq.headers = {"Authorization": "Bearer " + cred};
+    updateReq.body = {"action": "update",
+      "url": url,
+      "add": {"category": [category]}
+      }
+      
+      var success = updateReq.load();
+      
+  }
+
 var cred = await authorizeCredential("Craig McClellan Micro.blog");
 
 let userInput = new Alert();
-userInput.title = "Category Variables
+userInput.title = "Category Properties"
+userInput.message = "Input the term you would like to search blog posts for, and the Category name you would like to add.";
+userInput.addTextField("Search Term");
+userInput.addTextField("Category Name");
+userInput.addCancelAction("Cancel");
+userInput.addAction("Done");
+if (await userInput.present() == -1) {
+  Script.complete();
+  }
+else {
+  var searchTerm = userInput.textFieldValue(0);
+  var category = userInput.textFieldValue(1);
+  }
+  
 
-var postReq = new Request("http://micro.blog/micropub?q=source")
+
+var postReq = new Request(baseURL + "q?=source");
 postReq.headers = {"Authorization": "Bearer " + cred}
 var response = await postReq.loadString();
 Pasteboard.copy(response);
