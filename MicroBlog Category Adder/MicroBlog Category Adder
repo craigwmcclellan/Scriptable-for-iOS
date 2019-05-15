@@ -1,0 +1,36 @@
+async function authorizeCredential(credentialName) {
+   if (Keychain.contains(credentialName)) {
+      var credential = Keychain.get(credentialName);
+    }
+    else {
+        var credAlert = new Alert();
+        credAlert.title = credentialName + " Credential";
+        credAlert.message = "Please enter the credential for " + credentialName + " below.";
+        credAlert.addSecureTextField();
+        credAlert.addAction("Done")
+        credAlert.addCancelAction("Cancel");
+        
+        if (await credAlert.present() == 0) {
+          let userCred = credAlert.textFieldValue(0);
+          var chainSet = await Keychain.set(credentialName, userCred);
+          var credential = Keychain.get(credentialName);
+        }
+        else {
+          console.log("User Cancelled Action"); 
+        }
+    }
+    return credential
+}
+
+var cred = await authorizeCredential("Craig McClellan Micro.blog");
+
+let userInput = new Alert();
+userInput.title = "Category Variables
+
+var postReq = new Request("http://micro.blog/micropub?q=source")
+postReq.headers = {"Authorization": "Bearer " + cred}
+var response = await postReq.loadString();
+Pasteboard.copy(response);
+console.log(response);
+
+
