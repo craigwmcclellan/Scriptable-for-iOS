@@ -1,4 +1,4 @@
-let baseURL = "http://micro.blog/micropub"
+let baseURL = "http://micro.blog/micropub";
   
   async function authorizeCredential(credentialName) {
    if (Keychain.contains(credentialName)) {
@@ -9,7 +9,7 @@ let baseURL = "http://micro.blog/micropub"
         credAlert.title = credentialName + " Credential";
         credAlert.message = "Please enter the credential for " + credentialName + " below.";
         credAlert.addSecureTextField();
-        credAlert.addAction("Done")
+        credAlert.addAction("Done");
         credAlert.addCancelAction("Cancel");
         
         if (await credAlert.present() == 0) {
