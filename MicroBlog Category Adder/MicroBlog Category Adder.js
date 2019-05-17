@@ -1,30 +1,34 @@
+// Script to Utilize Micro.blog's Micropub API to download JSON of most recent 100 posts, analyze for certain characters, and assign a chosen category to posts that contain those characters.
+
 let baseURL = "http://micro.blog/micropub";
-  
-  async function authorizeCredential(credentialName) {
-   if (Keychain.contains(credentialName)) {
-      var credential = Keychain.get(credentialName);
+
+
+// Function to store and access the Micro.blog Authorization Token
+async function authorizeCredential(credentialName) {
+  if (Keychain.contains(credentialName)) {
+    var credential = Keychain.get(credentialName);
+    }
+  else {
+    var credAlert = new Alert();
+    credAlert.title = credentialName + " Credential";
+    credAlert.message = "Please enter the credential for " + credentialName + " below.";
+    credAlert.addSecureTextField();
+    credAlert.addAction("Done");
+    credAlert.addCancelAction("Cancel");
+        
+   if (await credAlert.present() == 0) {
+    let userCred = credAlert.textFieldValue(0);
+    var chainSet = await Keychain.set(credentialName, userCred);
+    var credential = Keychain.get(credentialName);
     }
     else {
-        var credAlert = new Alert();
-        credAlert.title = credentialName + " Credential";
-        credAlert.message = "Please enter the credential for " + credentialName + " below.";
-        credAlert.addSecureTextField();
-        credAlert.addAction("Done");
-        credAlert.addCancelAction("Cancel");
-        
-        if (await credAlert.present() == 0) {
-          let userCred = credAlert.textFieldValue(0);
-          var chainSet = await Keychain.set(credentialName, userCred);
-          var credential = Keychain.get(credentialName);
-        }
-        else {
-          console.log("User Cancelled Action");
-          Script.complete();
-        }
-    }
-    return credential
+     console.log("User Cancelled Action");
+     Script.complete();
+     }
+   }
+   return credential
 }
-
+//Function to send category information to Micro.blog
 async function updateCategory(url, category) {
     var updateReq = new Request(baseURL)
     updateReq.method = "POST";
@@ -40,7 +44,7 @@ async function updateCategory(url, category) {
   }
 
 var cred = await authorizeCredential("Craig McClellan Micro.blog");
-
+// Prompt user for search term and category name.
 let userInput = new Alert();
 userInput.title = "Category Properties"
 userInput.message = "Input the term you would like to search blog posts for, and the Category name you would like to add.";
