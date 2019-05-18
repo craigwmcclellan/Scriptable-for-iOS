@@ -24,6 +24,7 @@ async function authorizeCredential(credentialName) {
     else {
      console.log("User Cancelled Action");
      Script.complete();
+    return;
      }
    }
    return credential
