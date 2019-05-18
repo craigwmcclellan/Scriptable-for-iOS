@@ -58,12 +58,13 @@ userInput.addTextField("Search Term");
 userInput.addTextField("Category Name");
 userInput.addCancelAction("Cancel");
 userInput.addAction("Done");
-if (await userInput.present() == -1) {
-  Script.complete();
-  }
-else {
+if (await userInput.present() == 0) {
   var searchTerm = userInput.textFieldValue(0);
   var category = userInput.textFieldValue(1);
+  }
+else {
+  Script.complete();
+  return;
   }
   
 
