@@ -39,7 +39,8 @@ async function updateCategory(url, category) {
       "add": {"category": [category]}
       }
       
-      var success = updateReq.load();
+      var success = await updateReq.loadString();
+      console.log(success)
       if (success) {
       console.log("Post " + url + " added to category: " + category);
       }
