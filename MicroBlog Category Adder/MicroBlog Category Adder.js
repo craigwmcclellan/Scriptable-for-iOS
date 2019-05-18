@@ -40,7 +40,12 @@ async function updateCategory(url, category) {
       }
       
       var success = updateReq.load();
-      console.log(updateReq.response);
+      if (success) {
+      console.log("Post " + url + " added to category: " + category);
+      }
+      else {
+        console.log(success)
+        }
   }
 
 var cred = await authorizeCredential("Craig McClellan Micro.blog");
@@ -62,15 +67,17 @@ else {
   
 
 
-var postReq = new Request(baseURL + "q?=source");
+var postReq = new Request(baseURL + "?q=source");
 postReq.headers = {"Authorization": "Bearer " + cred}
 var postsResponse = await postReq.loadJSON();
 var postsList = postsResponse.items;
 
 for (i=0; i < postsList.length; i++) {
-  var match = postsList[i].properties.content.match(searchTerm)
-  if (match.length > 0) {
-    var req = await updateCategory(postsList.properties.url, category);
+  var postURL = postsList[i].properties.url[0]
+  var postContent = postsList[i].properties.content[0]
+  var match = postContent.match(searchTerm)
+  if (match) {
+    var req = await updateCategory(postURL, category);
   }
 }
 
